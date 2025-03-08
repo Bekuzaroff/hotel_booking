@@ -1,0 +1,268 @@
+[
+    {
+        "name": "Hilton de luxe",
+        "country": "Georgia",
+        "rating": 5.0,
+        "lng": 3.43234434,
+        "lat": 2.2212444433,
+        "images": [
+            "h1.webp",
+            "h2.webp",
+            "h3.webp",
+            "h4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Marriott Resort",
+        "country": "Greece",
+        "rating": 4.8,
+        "lng": 3.5434678,
+        "lat": 2.12334456,
+        "images": [
+            "m1.webp",
+            "m2.webp",
+            "m3.webp",
+            "m4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Four Seasons",
+        "country": "Italy",
+        "rating": 4.9,
+        "lng": 3.678390,
+        "lat": 2.34345678,
+        "images": [
+            "f1.webp",
+            "f2.webp",
+            "f3.webp",
+            "f4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Ritz Carlton",
+        "country": "France",
+        "rating": 5.0,
+        "lng": 3.1234345,
+        "lat": 2.5434321,
+        "images": [
+            "r1.webp",
+            "r2.webp",
+            "r3.webp",
+            "r4.webp"
+        ],
+        "hasSea": false
+    },
+    {
+        "name": "Sheraton Grand",
+        "country": "Spain",
+        "rating": 4.7,
+        "lng": 3.9876445,
+        "lat": 2.678940,
+        "images": [
+            "s1.webp",
+            "s2.webp",
+            "s3.webp",
+            "s4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Intercontinental",
+        "country": "Portugal",
+        "rating": 4.6,
+        "lng": 3.543244331,
+        "lat": 2.0439876,
+        "images": [
+            "i1.webp",
+            "i2.webp",
+            "i3.webp",
+            "i4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Hyatt Regency",
+        "country": "Turkey",
+        "rating": 4.5,
+        "lng": 3.6784330,
+        "lat": 2.41135678,
+        "images": [
+            "h1.webp",
+            "h2.webp",
+            "h3.webp",
+            "h4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Waldorf Astoria",
+        "country": "Switzerland",
+        "rating": 4.9,
+        "lng": 8.2334456,
+        "lat": 2.34434567,
+        "images": [
+            "w1.webp",
+            "w2.webp",
+            "w3.webp",
+            "w4.webp"
+        ],
+        "hasSea": false
+    },
+    {
+        "name": "Grand Hyatt",
+        "country": "Japan",
+        "rating": 4.8,
+        "lng": 9.8743654,
+        "lat": 2.1234343245,
+        "images": [
+            "g1.webp",
+            "g2.webp",
+            "g3.webp",
+            "g4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "The Peninsula",
+        "country": "China",
+        "rating": 5.0,
+        "lng": 1.544321,
+        "lat": 2.647890,
+        "images": [
+            "p1.webp",
+            "p2.webp",
+            "p3.webp",
+            "p4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Sofitel",
+        "country": "Belgium",
+        "rating": 4.4,
+        "lng": 1.67856290,
+        "lat": 2.34154567,
+        "images": [
+            "so1.webp",
+            "so2.webp",
+            "so3.webp",
+            "so4.webp"
+        ],
+        "hasSea": false
+    },
+    {
+        "name": "Radisson Blu",
+        "country": "Norway",
+        "rating": 4.5,
+        "lng": 8.2333456,
+        "lat": 2.432678,
+        "images": [
+            "r1.webp",
+            "r2.webp",
+            "r3.webp",
+            "r4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "The Ritz",
+        "country": "United Kingdom",
+        "rating": 5.0,
+        "lng": 3.9318765,
+        "lat": 2.678390,
+        "images": [
+            "tr1.webp",
+            "tr2.webp",
+            "tr3.webp",
+            "tr4.webp"
+        ],
+        "hasSea": false
+    },
+    {
+        "name": "Fairmont",
+        "country": "Canada",
+        "rating": 4.7,
+        "lng": 3.4325678,
+        "lat": 2.12345,
+        "images": [
+            "f1.webp",
+            "f2.webp",
+            "f3.webp",
+            "f4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "JW Marriott",
+        "country": "Australia",
+        "rating": 4.8,
+        "lng": 3.673890,
+        "lat": 2.345367,
+        "images": [
+            "j1.webp",
+            "j2.webp",
+            "j3.webp",
+            "j4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "The Oberoi",
+        "country": "India",
+        "rating": 4.9,
+        "lng": 3.87231654,
+        "lat": 2.5623789,
+        "images": [
+            "o1.webp",
+            "o2.webp",
+            "o3.webp",
+            "o4.webp"
+        ],
+        "hasSea": false
+    },
+    {
+        "name": "The St. Regis",
+        "country": "United States",
+        "rating": 5.0,
+        "lng": 3.12232345,
+        "lat": 2.9873265,
+        "images": [
+            "sr1.webp",
+            "sr2.webp",
+            "sr3.webp",
+            "sr4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Banyan Tree",
+        "country": "Thailand",
+        "rating": 4.6,
+        "lng": 3.5673289,
+        "lat": 2.23431356,
+        "images": [
+            "bt1.webp",
+            "bt2.webp",
+            "bt3.webp",
+            "bt4.webp"
+        ],
+        "hasSea": true
+    },
+    {
+        "name": "Nikki Beach",
+        "country": "Mexico",
+        "rating": 4.8,
+        "lng": 0.45678,
+        "lat": 2.34567,
+        "images": [
+            "nb1.webp",
+            "nb2.webp",
+            "nb3.webp",
+            "nb4.webp"
+        ],
+        "hasSea": true
+    }
+]

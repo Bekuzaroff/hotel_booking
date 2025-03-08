@@ -11,7 +11,7 @@ dot_env.config({path: './main.env'});
 mongoose.connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true
 }).then((conn) => {
-    console.log("server has started");
+    console.log("db is connected");
 });
 
 //start server entry point

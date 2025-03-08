@@ -5,7 +5,8 @@ const hotel_schema = new mongoose.Schema({
         unique: true,
         type: String,
         required: [true, "name is required field"],
-        trim: true
+        trim: true,
+        minlength: [2, "hotel name is too short"]
     },
     country: {
         type: String,
@@ -15,6 +16,12 @@ const hotel_schema = new mongoose.Schema({
     rating: {
         required: true,
         type: Number,
+        validate: {
+            validator: function(value){
+                return value >= 1 && value <= 5
+            },
+            message: "ratings should be between 1 and 5"
+        }
     },
     lng: {
         unique: true,
@@ -38,7 +45,18 @@ const hotel_schema = new mongoose.Schema({
 });
 hotel_schema.virtual("rating in 10").get(function(){
     return this.rating * 2;
-})
+});
+
+
+hotel_schema.pre('save', function(next){
+    this.rating = `rating: ${this.rating}`;
+    next();
+});
+
+hotel_schema.post('save', function(doc, next){
+    console.log('new document added to db');
+    next();
+});
 
 const Hotel = mongoose.model("hotels", hotel_schema);
 module.exports = Hotel;
