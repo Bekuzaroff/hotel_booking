@@ -1,42 +1,38 @@
 const Hotel = require('./../models/hotel');
+const CustomError = require('./../utils/custom_error');
+const async_handler = require('./../utils/async_handler');
+exports.get_all_hotels = async_handler(async (req, res) => {
 
-exports.get_all_hotels = async (req, res) => {
-    try{
-        let query = Hotel.find();
+    let query = Hotel.find();
 
-        //SORTING
-        let sort_type = req.query.sort;
-        
-        if(sort_type){
-            query = query.sort(sort_type);
-        }else{
-            query = query.sort("rating");
-        }
-
-        //PAGINATION
-        let page = req.query.page || 1;
-        let limit = req.query.limit || 10;
-
-        query = query.skip(limit * (page - 1)).limit(limit);
-        
-
-        const hotels = await query;
-        res.status(200).json({
-            status: 'success',
-            data:{
-                hotels
-            }
-        });
-        
-    }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: err.message
-        });
+    //SORTING
+    let sort_type = req.query.sort;
+    
+    if(sort_type){
+        query = query.sort(sort_type);
+    }else{
+        query = query.sort("rating");
     }
-}
 
-exports.get_five_rated_hotels = async (req, res, next) => {
+    //PAGINATION
+    let page = req.query.page || 1;
+    let limit = req.query.limit || 10;
+
+    query = query.skip(limit * (page - 1)).limit(limit);
+    
+
+    const hotels = await query;
+    res.status(200).json({
+        status: 'success',
+        data:{
+            hotels
+        }
+    });
+    
+
+})
+
+exports.get_five_rated_hotels = async_handler(async (req, res, next) => {
     const hotels = await Hotel.aggregate([
         {
             $match: {
@@ -57,9 +53,9 @@ exports.get_five_rated_hotels = async (req, res, next) => {
             hotels
         }
     })
-}
-exports.search_hotel_by_name = async (req, res) => {
-    try{
+});
+exports.search_hotel_by_name = async_handler(async (req, res) => {
+    
         let q = req.query.name;
         
         let found_hotels = await Hotel.find();
@@ -72,68 +68,63 @@ exports.search_hotel_by_name = async (req, res) => {
                 found_hotels
             }
         })
-        }catch(err){
-            res.status(404).json({
-                status: 'fail',
-                message: err.message
-            });
-        }
-}
+        
+})
 
-exports.add_hotel_to_db = async (req, res) => {
-    try{
+exports.add_hotel_to_db = async_handler(async (req, res) => {
+    
         await Hotel.create(req.body);
         
         res.status(201).json({
             status: 'success',
             message: 'hotel added successfully'
         });
-    }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: err.message
-        });
-    }
-}
+    
+})
 
-exports.update_hotels_field = async (req, res) => {
-    try{
+exports.update_hotels_field = async_handler(async (req, res, next) => {
+    
         let new_hotel = await Hotel.findByIdAndUpdate(req.query.id, req.body);
 
+
+        if(!new_hotel){
+            const err = new CustomError(`hotel with id ${req.params.id} does not exist`);
+            next(err);
+        }
         res.status(200).json({
             status: "success",
             data: {
                 new_hotel
             }
         })
-    }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: err.message
-        });
-    }
-}
+    
+})
 
-exports.delete_hotels_field = async (req, res) => {
-    try{
+exports.delete_hotels_field = async_handler(async (req, res, next) => {
+    
         let new_hotel = await Hotel.findByIdAndDelete(req.query.id, req.body);
 
+        if(!new_hotel){
+            const err = new CustomError(`hotel with id ${req.params.id} does not exist`);
+            next(err);
+        }
+
         res.status(200).json({
             status: "success",
             data: {
                 new_hotel
             }
         })
-    }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: err.message
-        });
-    }
-}
-exports.get_hotel_by_id = async(req, res) => {
-    try{
+    
+})
+exports.get_hotel_by_id = async_handler(async(req, res, next) => {
+    
         let hotel = await Hotel.findById(req.params.id);
+
+        if(!hotel){
+            const err = new CustomError(`hotel with id ${req.params.id} does not exist`);
+            next(err);
+        }
 
         res.status(200).json({
             status: 'success',
@@ -141,13 +132,8 @@ exports.get_hotel_by_id = async(req, res) => {
                 hotel
             }
         })
-    }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: err.message
-        });
-    }
-}
+    
+})
 
 
 

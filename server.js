@@ -13,7 +13,7 @@ mongoose.connect(process.env.CONNECTION_URL, {
 }).then((conn) => {
     console.log("db is connected");
 });
-
+console.log(process.env);
 //start server entry point
 const port = 8000;
 app.listen(port, () => {
