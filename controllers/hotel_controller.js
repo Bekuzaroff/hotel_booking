@@ -14,6 +14,7 @@ exports.get_all_hotels = async_handler(async (req, res) => {
         query = query.sort("rating");
     }
 
+    
     //PAGINATION
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
