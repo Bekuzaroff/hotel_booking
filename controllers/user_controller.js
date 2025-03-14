@@ -2,6 +2,7 @@ const async_error_handler = require('./../utils/async_handler');
 const User = require('./../models/user');
 const CustomError = require('../utils/custom_error');
 const jwt = require('jsonwebtoken');
+const util = require('util');
 
 const signJWT = (id, email) => {
     return jwt.sign({id, email}, process.env.SECRET_JWT_KEY, {
@@ -57,3 +58,32 @@ exports.log_in_user = async_error_handler(async (req, res, next) => {
     
 
 });
+
+exports.protect = async_error_handler(async (req, res, next) => {
+    //retrieved jwt token from client with header
+    let users_jwt = req.headers.authorization;
+
+
+    if(!users_jwt){
+        const err = new CustomError('you did not add you jwt token', 404);
+        return next(err)
+    }
+    const signed_jwt = await util.promisify(jwt.verify)(users_jwt, process.env.SECRET_JWT_KEY);
+
+    //if the user exists
+    const user = await User.findById(signed_jwt.id);
+
+    if(!user){
+        const err = new CustomError('user with such token does not exist', 404);
+        return next(err)
+    }
+    //if password was changed after login
+    if(await user.password_changed_after_login(signed_jwt.iat)){
+        const err = new CustomError('you changed you password after you logined, please, login again', 404);
+        return next(err)
+    }
+
+    next();
+    
+
+})
