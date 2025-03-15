@@ -61,7 +61,7 @@ exports.log_in_user = async_error_handler(async (req, res, next) => {
 
 exports.protect = async_error_handler(async (req, res, next) => {
     //retrieved jwt token from client with header
-    let users_jwt = req.headers.authorization;
+    let users_jwt = req.headers.authorization.split(' ')[1];
 
 
     if(!users_jwt){
@@ -83,7 +83,18 @@ exports.protect = async_error_handler(async (req, res, next) => {
         return next(err)
     }
 
+    req.user = user;
     next();
     
 
-})
+});
+
+exports.restrict = (role) => {
+    return (req, res, next) => {
+        if(req.user.role !== role){
+            const err = new CustomError('you are not allowed to change hotel data', 403);
+            next(err);
+        }
+        next();
+    }
+}

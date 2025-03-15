@@ -5,9 +5,9 @@ const user_controller = require('./../controllers/user_controller')
 
 router.route('/hotels')
     .get(user_controller.protect, hotel_controller.get_all_hotels)
-    .post(hotel_controller.add_hotel_to_db)
-    .patch(hotel_controller.update_hotels_field)
-    .delete(hotel_controller.delete_hotels_field)
+    .post(user_controller.protect, user_controller.restrict('admin'), hotel_controller.add_hotel_to_db)
+    .patch(user_controller.protect, user_controller.restrict('admin'), hotel_controller.update_hotels_field)
+    .delete(user_controller.protect, user_controller.restrict('admin'), hotel_controller.delete_hotels_field)
 
 router.route('/hotels/:id')
     .get(user_controller.protect, hotel_controller.get_hotel_by_id);
