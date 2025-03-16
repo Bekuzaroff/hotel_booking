@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
-
+const crypto = require('crypto');
 const user_schema = mongoose.Schema({
     name: {
         unique: true,
@@ -35,7 +35,9 @@ const user_schema = mongoose.Schema({
         },
         required: [true, 'please confirm your password']
     },
-    password_last_changed: Date
+    password_last_changed: Date,
+    reset_token: String,
+    reset_token_expires: Date
 });
 
 
@@ -62,6 +64,15 @@ user_schema.methods.password_changed_after_login = async function (jwt_time_stam
 
         return this.password_last_changed > jwt_time_stamp;
     }
+}
+
+user_schema.methods.generate_reset_token = function() {
+    const token = crypto.randomBytes(32).toString('hex');
+
+    this.reset_token = crypto.createHash('sha256').update(token).digest('hex');
+    this.reset_token_expires = Date.now() + 10 * 60 * 1000;
+
+    return token;
 }
 
 //data model
