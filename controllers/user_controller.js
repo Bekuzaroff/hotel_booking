@@ -170,9 +170,7 @@ exports.resetPassword = async_error_handler(async (req, res, next) => {
 
 
 exports.updateUserPassword = async_error_handler(async (req, res, next) => {
-    let jwt_token = await util.promisify(jwt.verify)(req.body.token, process.util.SECRET_JWT_KEY);
-
-    let user = await User.findOne({_id: jwt_token.id});
+    let user = req.user;
 
     if(!user){
         const err = new CustomError('token not found', 404);
@@ -197,21 +195,26 @@ exports.updateUserPassword = async_error_handler(async (req, res, next) => {
     });
 
 });
-
-exports.deleteCurrentUser = async_error_handler(async (req, res, next) => {
-    let jwt_token = await util.promisify(jwt.verify)(req.body.token, process.util.SECRET_JWT_KEY);
-
-    let id = jwt_token.id;
-    let user = User.findById(id);
+exports.updateUserDetailes = async_error_handler(async (req, res, next) => {
+    let user = req.user;
 
     if(!user){
         const err = new CustomError('token not found', 404);
         next(err);
     }
 
-    user.remove(() => {
-        console.log('user is removed')
-    })
+    await User.updateOne({_id: user.id});
+});
+
+exports.deleteCurrentUser = async_error_handler(async (req, res, next) => {
+    let user = req.user;
+
+    if(!user){
+        const err = new CustomError('token not found', 404);
+        next(err);
+    }
+
+    User.deleteOne({_id: user.id});
 
     res.status(200).json({
         status: 'success',
