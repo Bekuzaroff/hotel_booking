@@ -140,7 +140,7 @@ exports.forgotPassword = async_error_handler(async (req, res, next) => {
 });
 exports.resetPassword = async_error_handler(async (req, res, next) => {
     let token = crypto.createHash('sha256').update(req.params.token).digest('hex');
-    let user = User.findOne({reset_token: token, reset_token_expires:  {$gt: Date.now()}});
+    let user = await User.findOne({reset_token: token, reset_token_expires:  {$gt: Date.now()}});
 
 
     if(!user){
@@ -166,4 +166,38 @@ exports.resetPassword = async_error_handler(async (req, res, next) => {
         status: 'success',
         token: jwt
     });
+});
+
+
+exports.updateUserPassword = async_error_handler(async (req, res, next) => {
+    let jwt_token = await util.promisify(jwt.verify)(req.body.token, process.util.SECRET_JWT_KEY);
+
+    let user = await User.findOne({_id: jwt_token._id, email: jwt_token.email});
+
+    if(!user){
+        const err = new CustomError('token not found', 404);
+        next(err);
+    }
+
+    let new_pass = req.new_password;
+    let confirm_new_pass = req.confirm_new_pass;
+
+    user.password = new_pass;
+    user.confirm_password = confirm_new_pass;
+    user.password_last_changed = Date.now();
+
+    await user.save();
+
+    //login user after updated password
+    let jwt = signJWT(user.id, user.email);
+    
+    res.status(200).json({
+        status: 'success',
+        token: jwt
+    });
+
+});
+
+exports.deleteCurrentUser = async_error_handler(async (req, res, next) => {
+    
 });

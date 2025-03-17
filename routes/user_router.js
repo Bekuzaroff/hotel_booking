@@ -7,8 +7,16 @@ router.route('/signup')
     .post(user_controller.sign_up_user);
 router.route('/login')
     .post(user_controller.log_in_user);
+
+
+router.route('/update_password')
+    .patch(user_controller.updateUserPassword);
+    
+
+
 router.route('/forgot_password')
     .post(user_controller.forgotPassword);
-    router.route('/reset_password/:token')
+
+router.route('/reset_password/:token')
     .patch(user_controller.resetPassword);
 module.exports = router;
