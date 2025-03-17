@@ -4,6 +4,7 @@ const CustomError = require('../utils/custom_error');
 const jwt = require('jsonwebtoken');
 const util = require('util');
 const email = require('.././utils/mail');
+const crypto = require('crypto');
 
 const signJWT = (id, email) => {
     return jwt.sign({id, email}, process.env.SECRET_JWT_KEY, {
@@ -136,4 +137,33 @@ exports.forgotPassword = async_error_handler(async (req, res, next) => {
     }
 
 
+});
+exports.resetPassword = async_error_handler(async (req, res, next) => {
+    let token = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    let user = User.findOne({reset_token: token, reset_token_expires:  {$gt: Date.now()}});
+
+
+    if(!user){
+        const err = new CustomError('token not found', 404);
+        next(err);
+    }
+
+    const body = req.body;
+
+    //update some user fields 
+    user.reset_token = undefined;
+    user.reset_token_expires = undefined;
+    user.password = body.new_password;
+    user.confirm_password = body.confirm_new_password;
+    user.password_last_changed = Date.now();
+
+    await user.save();
+
+    //login user after updated password
+    let jwt = signJWT(user.id, user.email);
+    
+    res.status(200).json({
+        status: 'success',
+        token: jwt
+    });
 });

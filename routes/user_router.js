@@ -10,5 +10,5 @@ router.route('/login')
 router.route('/forgot_password')
     .post(user_controller.forgotPassword);
     router.route('/reset_password/:token')
-    .post(user_controller.resetPassword);
+    .patch(user_controller.resetPassword);
 module.exports = router;
