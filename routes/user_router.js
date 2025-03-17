@@ -8,12 +8,11 @@ router.route('/signup')
 router.route('/login')
     .post(user_controller.log_in_user);
 
-
 router.route('/update_password')
     .patch(user_controller.updateUserPassword);
+router.route('/delete_user')
+    .delete(user_controller.deleteCurrentUser);
     
-
-
 router.route('/forgot_password')
     .post(user_controller.forgotPassword);
 
