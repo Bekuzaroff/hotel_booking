@@ -11,23 +11,40 @@ const signJWT = (id, email) => {
         expiresIn: process.env.EXPIRING_TIME
     });
 }
-exports.sign_up_user = async_error_handler(async (req, res, next) => {
-    let user = await User.create(req.body);
 
+const sendResponse = function(user, statusCode, res){
     const token = signJWT(user._id, user.email);
-
-    if(!user){
-        let err = new CustomError('you did not add you data to sign up');
-        next(err);
+    
+    let options = {
+        maxAge: 60 * 60 * 1000,
+        httpOnly: true
     }
 
-    res.status(201).json({
+    if(process.env.NODE_ENV == 'production'){
+        options.secure = true;
+    }
+
+    res.cookie('jwt', token, options);
+
+    res.status(statusCode).json({
         status: 'success',
         token,
         data: {
             user: req.body
         }
-    })
+    });
+}
+exports.sign_up_user = async_error_handler(async (req, res, next) => {
+    let user = await User.create(req.body);
+
+    
+
+    if(!user){
+        let err = new CustomError('you did not add you data to sign up');
+        next(err);
+    }
+    sendResponse(user, 201, res);
+    
 });
 
 exports.log_in_user = async_error_handler(async (req, res, next) => {
@@ -47,15 +64,7 @@ exports.log_in_user = async_error_handler(async (req, res, next) => {
         return next(err);
     }
 
-    const token = signJWT(user._id, user.email);
-
-    res.status(200).json({
-        status: 'success',
-        token,
-        data: {
-            user: req.body
-        }
-    })
+    sendResponse(user, 200, res);
 
     
 
@@ -160,12 +169,7 @@ exports.resetPassword = async_error_handler(async (req, res, next) => {
     await user.save();
 
     //login user after updated password
-    let jwt = signJWT(user.id, user.email);
-    
-    res.status(200).json({
-        status: 'success',
-        token: jwt
-    });
+    sendResponse(user, 200, res);
 });
 
 
@@ -187,12 +191,7 @@ exports.updateUserPassword = async_error_handler(async (req, res, next) => {
     await user.save();
 
     //login user after updated password
-    let jwt = signJWT(user.id, user.email);
-    
-    res.status(200).json({
-        status: 'success',
-        token: jwt
-    });
+    sendResponse(user, 200, res);
 
 });
 exports.updateUserDetailes = async_error_handler(async (req, res, next) => {
