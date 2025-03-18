@@ -1,6 +1,7 @@
 const express = require('express');
 const rate_limit = require('express-rate-limit');
 const router = require('./../routes/router');
+const helmet = require('helmet');
 
 const user_router = require('./../routes/user_router');
 const CustomError = require('./../utils/custom_error');
@@ -29,6 +30,8 @@ const prod_errors = (err, res) => {
     }
 } 
 
+app.use(helmet());
+
 let limiter = rate_limit({
     max: 3,
     windowsMs: 60 * 60 * 1000,
@@ -37,7 +40,7 @@ let limiter = rate_limit({
 
 app.use('/api', limiter);
 
-app.use(express.json());
+app.use(express.json({limit: '10kb'}));
 
 app.use('/api/v1/hotel_server',router);
 app.use('/api/v1/users', user_router);
