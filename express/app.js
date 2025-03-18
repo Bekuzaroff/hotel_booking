@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
-
+const rate_limit = require('express-rate-limit');
 const router = require('./../routes/router');
-const user_router = require('./../routes/user_router');
 
+const user_router = require('./../routes/user_router');
 const CustomError = require('./../utils/custom_error');
+
+const app = express();
 
 const dev_errors = (err, res) => {
     res.status(err.statusCode).json({
@@ -27,6 +28,14 @@ const prod_errors = (err, res) => {
         })
     }
 } 
+
+let limiter = rate_limit({
+    max: 3,
+    windowsMs: 60 * 60 * 1000,
+    message: 'too many request from this IP address, please try after one hour'
+})
+
+app.use('/api', limiter);
 
 app.use(express.json());
 
