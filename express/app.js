@@ -4,6 +4,8 @@ const router = require('./../routes/router');
 const helmet = require('helmet');
 const sanitize = require('express-mongo-sanitize');
 const xss_clean = require('xss-clean');
+const hpp = require('hpp');
+
 const user_router = require('./../routes/user_router');
 const CustomError = require('./../utils/custom_error');
 
@@ -45,6 +47,8 @@ app.use(express.json({limit: '10kb'}));
 
 app.use(sanitize());
 app.use(xss_clean())
+
+app.use(hpp())
 
 app.use('/api/v1/hotel_server',router);
 app.use('/api/v1/users', user_router);
