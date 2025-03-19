@@ -2,7 +2,8 @@ const express = require('express');
 const rate_limit = require('express-rate-limit');
 const router = require('./../routes/router');
 const helmet = require('helmet');
-
+const sanitize = require('express-mongo-sanitize');
+const xss_clean = require('xss-clean');
 const user_router = require('./../routes/user_router');
 const CustomError = require('./../utils/custom_error');
 
@@ -41,6 +42,9 @@ let limiter = rate_limit({
 app.use('/api', limiter);
 
 app.use(express.json({limit: '10kb'}));
+
+app.use(sanitize());
+app.use(xss_clean())
 
 app.use('/api/v1/hotel_server',router);
 app.use('/api/v1/users', user_router);
